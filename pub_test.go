@@ -82,7 +82,7 @@ func testUnsubscribeFromEvent(t *testing.T, publisher publisherTest){
 
 	publisher.pub.Unsubscribe(sub, publisher.event)
 	got := len(publisher.pub.subscribers)
-	if got != 1 {
+	if got != 0 {
 		t.Errorf("testUnsubscribeFromEvent failed to remove subscriber. Expected: %v. Actual: %v",0, got )
 	}
 }
