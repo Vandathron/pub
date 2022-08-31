@@ -27,13 +27,15 @@ func(d *Publisher) SetLogger(logger Logger){
 	d.l = logger
 }
 
-// CreateEvent creates a new event.
-// Calling this method will remove all existing subscribers for this event if it already exist.
-func(d *Publisher) CreateEvent(event string){
-	if d.EventExist(event){
-		d.subscribers[event].popAll()
+// CreateEvent create events.
+// Calling this method will remove all existing subscribers for event if it already exist.
+func(d *Publisher) CreateEvent(events ...string){
+	for _, ev := range events{
+		if d.EventExist(ev){
+			d.subscribers[ev].popAll()
+		}
+		d.subscribers[ev] = newQueue(nil)
 	}
-	d.subscribers[event] = newQueue(nil)
 }
 
 // Subscribe subscribes subscriber to event. Creates the event if event does not exist.
