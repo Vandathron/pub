@@ -19,6 +19,7 @@ func NewPublisher() *Publisher {
 	return &Publisher{
 		subscribers: make(map[string]*subQueue),
 		l:      nil,
+                DisableLogs: true
 	}
 }
 
