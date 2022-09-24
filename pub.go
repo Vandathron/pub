@@ -39,26 +39,16 @@ func(d *Publisher) CreateEvent(events ...string){
 	}
 }
 
-// Subscribe subscribes subscriber to event. Creates the event if event does not exist.
-//
-// If subscriber already exists, error ErrDuplicateSubscriber is returned.
-func(d *Publisher) Subscribe(subscriber subFunc, event string) (bool, error){
-	if _, ok := d.subscribers[event]; !ok {
-		d.subscribers[event] = newQueue(subscriber)
-		return true, nil
-	}
+// Subscribe subscribes subscribers to event. Creates the event if event does not exist.
+func(d *Publisher) Subscribe(event string, subscribers ...subFunc){
+	for _, s := range subscribers {
+		if !d.subscriberToEventAlreadyExists(s, event){
+			d.subscribers[event].pushFunc(s)
+			subscriberName := getFunctionName(s)
 
-	if d.subscriberToEventAlreadyExists(subscriber, event) {
-			return false, ErrDuplicateSubscriber
+			d.logInf(fmt.Sprintf("Subscriber: %s subscribed to Event: %s", subscriberName, event))
 		}
-
-	d.subscribers[event].pushFunc(subscriber)
-
-	subscriberName := getFunctionName(subscriber)
-
-	d.logInf(fmt.Sprintf("Subscriber: %s subscribed to Event: %s", subscriberName, event))
-
-	return true, nil
+	}
 }
 
 // Unsubscribe unsubscribes subscriber from the event.

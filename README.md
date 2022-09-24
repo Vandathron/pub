@@ -53,8 +53,7 @@ func SendSMS(data pub.EventPayload){
 ```
 Subscribe listeners to event:
 ```go
-p.Subscribe(SendSMS, "USER.CREATED")
-p.Subscribe(SendWelcomeEmail, "USER.CREATED")
+p.Subscribe("USER.CREATED", SendSMS, SendWelcomeEmail)
  ```
 6
 Event can be emitted by calling `Publish(event string)` method. This publishes event and execute subscribers concurrently.
