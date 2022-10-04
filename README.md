@@ -120,8 +120,8 @@ func main(){
 	p.CreateEvent("USER.CREATED")
 	p.CreateEvent("USER.DELETED")
 
-	p.Subscribe(SendSMS, "USER.CREATED")
-	p.Subscribe(SendWelcomeEmail, "USER.CREATED")
+	p.Subscribe("USER.CREATED", SendSMS)
+    p.Subscribe("USER.CREATED", SendWelcomeEmail)
 
 	p.Publish("USER.CREATED", pub.EventPayload{
 		Data:   User{name: "van"},
